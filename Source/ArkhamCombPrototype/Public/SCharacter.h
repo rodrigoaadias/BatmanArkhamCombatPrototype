@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
@@ -14,6 +15,8 @@ class USAbilityComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class USCharacterMovementComponent;
+class UInputAction;
+class UInputMappingContext;
 
 UCLASS()
 class ASCharacter : public ACharacter
@@ -25,6 +28,27 @@ public:
 
 protected:
 
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* Input_Move;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* Input_LookMouse;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* Input_LookStick;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	FVector2D LookStickSensitivity;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* Input_Attack;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* Input_CounterAttack;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
@@ -67,7 +91,8 @@ public:
 
 private:
 	bool bWasFallingLastFrame;
-	
-	void MoveForward(float Value);
-	void MoveRight(float Value);
+
+	void Move(const FInputActionValue& Value);
+	void LookMouse(const FInputActionValue& Value);
+	void LookStick(const FInputActionValue& Value);
 };
