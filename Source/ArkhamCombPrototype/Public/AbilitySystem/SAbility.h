@@ -21,7 +21,7 @@ public:
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	FGameplayTag AbilityName;
+	FName AbilityName;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer GrantsTags;
@@ -74,7 +74,7 @@ public:
 	virtual UWorld* GetWorld() const override;
 
 	UFUNCTION(BlueprintCallable)
-	FGameplayTag GetAbilityNameTag() const;
+	FName GetAbilityNameTag() const;
 
 	UFUNCTION(BlueprintCallable)
 	bool IsRunning() const;

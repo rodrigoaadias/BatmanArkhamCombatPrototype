@@ -9,6 +9,8 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "SCombatComponent.h"
+#include "Components/ArrowComponent.h"
 
 ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer.SetDefaultSubobjectClass<USCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -25,6 +27,9 @@ ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
 	AbilityComponent = CreateDefaultSubobject<USAbilityComponent>(TEXT("Ability Comp"));
+	CombatComponent = CreateDefaultSubobject<USCombatComponent>(TEXT("Combat Component"));
+	CombatArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Combat Arrow Debug"));
+	CombatArrowComp->SetupAttachment(RootComponent);
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
@@ -43,17 +48,17 @@ void ASCharacter::Landed(const FHitResult& Hit)
 
 void ASCharacter::StartCrouch()
 {
-	AbilityComponent->StartAbilityByTagName(this, CrouchAbilityTag);
+	AbilityComponent->StartAbilityByTagName(this, "Crouch");
 }
 
 void ASCharacter::StopCrouch()
 {
-	AbilityComponent->StopAbilityByTagName(this, CrouchAbilityTag);
+	AbilityComponent->StopAbilityByTagName(this, "Crouch");
 }
 
 void ASCharacter::StartJump()
 {
-	AbilityComponent->StartAbilityByTagName(this, JumpAbilityTag);
+	AbilityComponent->StartAbilityByTagName(this, "Jump");
 	OnJumpPressed.Broadcast();
 }
 
@@ -72,6 +77,21 @@ void ASCharacter::Tick(float DeltaTime)
 	}
 
 	bWasFallingLastFrame = GetCharacterMovement()->IsFalling();
+	const FVector Direction = CharacterMovementComponent->GetCurrentAcceleration().GetSafeNormal();
+	AActor* Enemy = CombatComponent->GetEnemyOnDirection(Direction);
+	if(Enemy)
+	{
+		DrawDebugSphere(GetWorld(), Enemy->GetActorLocation(), 30.0f,
+			32, FColor::Green);
+		const FVector NewDirection = Enemy->GetActorLocation() - GetActorLocation();
+		CombatArrowComp->SetWorldRotation(NewDirection.Rotation());
+	}
+	else
+	{		
+		CombatArrowComp->SetWorldRotation(Direction.Rotation());
+	}
+
+	CombatArrowComp->SetVisibility(CharacterMovementComponent->GetCurrentAcceleration().SquaredLength() > 0.5f);
 }
 
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -90,13 +110,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
 	EnhancedInputComponent->BindAction(Input_Move, ETriggerEvent::Triggered, this, &ASCharacter::Move);
-	EnhancedInputComponent->BindAction(Input_LookMouse, ETriggerEvent::Triggered, this, &ASCharacter::LookMouse);
-	
-	// PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::StartJump);
-	// PlayerInputComponent->BindAction("Jump", IE_Released, this, &ASCharacter::StopJumping);
-	//
-	// PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::StartCrouch);
-	// PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::StopCrouch);
+	EnhancedInputComponent->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ASCharacter::Look);
+	EnhancedInputComponent->BindAction(Input_Attack, ETriggerEvent::Triggered, this, &ASCharacter::Punch);
 }
 
 FVector ASCharacter::GetInputDirection() const
@@ -120,7 +135,7 @@ void ASCharacter::Move(const FInputActionValue& Value)
 	AddMovementInput(RightVector, Input.X);	
 }
 
-void ASCharacter::LookMouse(const FInputActionValue& Value)
+void ASCharacter::Look(const FInputActionValue& Value)
 {	
 	const FVector2D Input = Value.Get<FVector2D>();
 
@@ -128,10 +143,7 @@ void ASCharacter::LookMouse(const FInputActionValue& Value)
 	AddControllerPitchInput(Input.Y);
 }
 
-void ASCharacter::LookStick(const FInputActionValue& Value)
-{	
-	const FVector2D Input = Value.Get<FVector2D>();
-
-	AddControllerYawInput(Input.X * LookStickSensitivity.X * GetWorld()->GetDeltaSeconds());
-	AddControllerPitchInput(Input.Y * LookStickSensitivity.Y * GetWorld()->GetDeltaSeconds());
+void ASCharacter::Punch(const FInputActionValue& Value)
+{
+	AbilityComponent->StartAbilityByTagName(this, "Punch");
 }

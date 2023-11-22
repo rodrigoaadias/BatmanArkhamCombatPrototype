@@ -43,10 +43,10 @@ public:
 	void AddAbility(TSubclassOf<USAbility> AbilityClass);
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
-	bool StartAbilityByTagName(AActor* InstigatorActor, FGameplayTag AbilityTagName);
+	bool StartAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Ability")
-	bool StopAbilityByTagName(AActor* InstigatorActor, FGameplayTag AbilityTagName);
+	bool StopAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName);
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void StopAbilitiesWithTag(AActor* Instigator, FGameplayTagContainer TagsToCancel);

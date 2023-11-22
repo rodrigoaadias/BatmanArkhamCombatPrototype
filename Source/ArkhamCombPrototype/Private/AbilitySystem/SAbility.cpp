@@ -83,7 +83,7 @@ UWorld* USAbility::GetWorld() const
 	return nullptr;
 }
 
-FGameplayTag USAbility::GetAbilityNameTag() const
+FName USAbility::GetAbilityNameTag() const
 {
 	return AbilityName;
 }
@@ -110,7 +110,7 @@ void USAbility::Tick(float DeltaTime)
 		return;
 	}
 
-	LastTickFrame = GFrameCounter;
+	LastTickFrame = GFrameCounter;	
 	TickAbility(DeltaTime);
 }
 

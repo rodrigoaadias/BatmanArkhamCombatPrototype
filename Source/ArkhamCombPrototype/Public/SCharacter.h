@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USCombatComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FJumpPressed);
 
 class USClimbingComponent;
@@ -35,10 +36,7 @@ protected:
 	UInputAction* Input_Move;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UInputAction* Input_LookMouse;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	UInputAction* Input_LookStick;
+	UInputAction* Input_Look;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	FVector2D LookStickSensitivity;
@@ -59,16 +57,16 @@ protected:
 	TObjectPtr<USAbilityComponent> AbilityComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	FGameplayTag JumpAbilityTag;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	FGameplayTag CrouchAbilityTag;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
 	FGameplayTag InAirTag;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USCombatComponent> CombatComponent;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Movement)
 	TObjectPtr<USCharacterMovementComponent> CharacterMovementComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UArrowComponent* CombatArrowComp;
 
 	virtual void BeginPlay() override;
 	virtual void Landed(const FHitResult& Hit) override;
@@ -93,6 +91,6 @@ private:
 	bool bWasFallingLastFrame;
 
 	void Move(const FInputActionValue& Value);
-	void LookMouse(const FInputActionValue& Value);
-	void LookStick(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void Punch(const FInputActionValue& Value);
 };

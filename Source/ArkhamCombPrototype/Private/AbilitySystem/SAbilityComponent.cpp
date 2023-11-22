@@ -46,7 +46,7 @@ void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass)
 	}
 }
 
-bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FGameplayTag AbilityTagName)
+bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName)
 {
 	for(USAbility* Ability : Abilities)
 	{
@@ -71,7 +71,7 @@ bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FGamepla
 	return false;
 }
 
-bool USAbilityComponent::StopAbilityByTagName(AActor* InstigatorActor, FGameplayTag AbilityTagName)
+bool USAbilityComponent::StopAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName)
 {
 	for(USAbility* Ability : Abilities)
 	{
