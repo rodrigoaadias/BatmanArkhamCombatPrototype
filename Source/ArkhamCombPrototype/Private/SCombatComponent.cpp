@@ -41,3 +41,10 @@ AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 	return nullptr;
 }
 
+void USCombatComponent::SetWarpTarget(const FVector Location, const FRotator Rotation)
+{
+	WarpTargetLocation = Location;
+	WarpTargetRotation = Rotation;
+	UpdateWarpTarget.Broadcast();
+}
+

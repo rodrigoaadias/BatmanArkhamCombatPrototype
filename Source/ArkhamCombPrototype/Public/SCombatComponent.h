@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "SCombatComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartCombatWarping);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ARKHAMCOMBPROTOTYPE_API USCombatComponent : public UActorComponent
@@ -25,4 +26,15 @@ protected:
 
 public:
 	AActor* GetEnemyOnDirection(const FVector Direction) const;
+
+	UPROPERTY(BlueprintReadOnly)
+	FVector WarpTargetLocation;
+
+	UPROPERTY(BlueprintReadOnly)
+	FRotator WarpTargetRotation;
+
+	void SetWarpTarget(const FVector Location, const FRotator Rotation);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnStartCombatWarping UpdateWarpTarget;
 };

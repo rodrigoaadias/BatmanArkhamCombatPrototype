@@ -76,22 +76,7 @@ void ASCharacter::Tick(float DeltaTime)
 		AbilityComponent->ActiveTags.RemoveTag(InAirTag);
 	}
 
-	bWasFallingLastFrame = GetCharacterMovement()->IsFalling();
-	const FVector Direction = CharacterMovementComponent->GetCurrentAcceleration().GetSafeNormal();
-	AActor* Enemy = CombatComponent->GetEnemyOnDirection(Direction);
-	if(Enemy)
-	{
-		DrawDebugSphere(GetWorld(), Enemy->GetActorLocation(), 30.0f,
-			32, FColor::Green);
-		const FVector NewDirection = Enemy->GetActorLocation() - GetActorLocation();
-		CombatArrowComp->SetWorldRotation(NewDirection.Rotation());
-	}
-	else
-	{		
-		CombatArrowComp->SetWorldRotation(Direction.Rotation());
-	}
-
-	CombatArrowComp->SetVisibility(CharacterMovementComponent->GetCurrentAcceleration().SquaredLength() > 0.5f);
+	bWasFallingLastFrame = GetCharacterMovement()->IsFalling();	
 }
 
 void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
