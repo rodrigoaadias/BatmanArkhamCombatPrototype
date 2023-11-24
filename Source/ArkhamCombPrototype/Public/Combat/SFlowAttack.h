@@ -21,7 +21,13 @@ public:
 	void StartAbility_Implementation(AActor* InstigatorActor) override;
 	void StopAbility_Implementation(AActor* InstigatorActor) override;
 
-protected:	
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAnimMontage* Attacks;
+
+	FTimerHandle Attack_TimerHandle;
+	
 	TObjectPtr<USCombatComponent> CombatComponent;
-	AActor* Enemy;
+	TObjectPtr<AActor> Enemy;
 };

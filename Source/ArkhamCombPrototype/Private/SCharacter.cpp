@@ -96,7 +96,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 	EnhancedInputComponent->BindAction(Input_Move, ETriggerEvent::Triggered, this, &ASCharacter::Move);
 	EnhancedInputComponent->BindAction(Input_Look, ETriggerEvent::Triggered, this, &ASCharacter::Look);
-	EnhancedInputComponent->BindAction(Input_Attack, ETriggerEvent::Triggered, this, &ASCharacter::Punch);
+	EnhancedInputComponent->BindAction(Input_Attack, ETriggerEvent::Triggered, this, &ASCharacter::Attack);
 }
 
 FVector ASCharacter::GetInputDirection() const
@@ -128,7 +128,7 @@ void ASCharacter::Look(const FInputActionValue& Value)
 	AddControllerPitchInput(Input.Y);
 }
 
-void ASCharacter::Punch(const FInputActionValue& Value)
+void ASCharacter::Attack(const FInputActionValue& Value)
 {
-	AbilityComponent->StartAbilityByTagName(this, "Punch");
+	AbilityComponent->StartAbilityByTagName(this, "Attack");
 }

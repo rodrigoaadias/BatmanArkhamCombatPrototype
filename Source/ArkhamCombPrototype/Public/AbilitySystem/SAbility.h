@@ -12,7 +12,7 @@ class ASCharacter;
  * 
  */
 UCLASS(Blueprintable)
-class  USAbility : public UObject, public FTickableGameObject
+class USAbility : public UObject, public FTickableGameObject
 {
 	GENERATED_BODY()
 

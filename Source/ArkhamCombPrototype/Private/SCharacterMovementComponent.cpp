@@ -25,8 +25,8 @@ void USCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
 
 	switch (CustomMovementMode)
 	{
-	case CMOVE_Climbing:
-		PhysClimbing(deltaTime, Iterations);
+	case CMOVE_ATTACK:
+		PhysAttacking(deltaTime, Iterations);
 		break;
 	default:
 		UE_LOG(LogTemp, Fatal, TEXT("Invalid Custom Movement Mode"));
@@ -42,7 +42,7 @@ float USCharacterMovementComponent::GetMaxBrakingDeceleration() const
 
 	switch (CustomMovementMode)
 	{
-	case CMOVE_Climbing:
+	case CMOVE_ATTACK:
 		return BrakingDecelerationFlying;
 	default:
 		UE_LOG(LogTemp, Fatal, TEXT("Invalid custom movement mode"));
@@ -52,7 +52,7 @@ float USCharacterMovementComponent::GetMaxBrakingDeceleration() const
 
 void USCharacterMovementComponent::PhysicsRotation(float DeltaTime)
 {
-	if(IsCustomMovementMode(CMOVE_Climbing) || MovementMode == MOVE_Falling)
+	if(IsCustomMovementMode(CMOVE_ATTACK) || MovementMode == MOVE_Falling)
 	{
 		return;
 	}
@@ -83,18 +83,18 @@ bool USCharacterMovementComponent::IsCustomMovementMode(ECustomMovementMode Cust
 	return MovementMode == MOVE_Custom && CustomMovementMode == CustomMovement; 
 }
 
-void USCharacterMovementComponent::PhysClimbing(float deltaTime, int32 Iterations)
+void USCharacterMovementComponent::PhysAttacking(float deltaTime, int32 Iterations)
 {
 	if (deltaTime < MIN_TICK_TIME)
 	{
 		return;
 	}	
 	
-	if(AbilityComponent->ActiveTags.HasTag(InterpolatingTag) || AbilityComponent->ActiveTags.HasAny(TagsWithoutRootMotionInClimbing))
-	{
-		Velocity = FVector::ZeroVector;
-		return;
-	}
+	// if(AbilityComponent->ActiveTags.HasTag(InterpolatingTag) || AbilityComponent->ActiveTags.HasAny(TagsWithoutRootMotionInClimbing))
+	// {
+	// 	Velocity = FVector::ZeroVector;
+	// 	return;
+	// }
 
 	RestorePreAdditiveRootMotionVelocity();
 	

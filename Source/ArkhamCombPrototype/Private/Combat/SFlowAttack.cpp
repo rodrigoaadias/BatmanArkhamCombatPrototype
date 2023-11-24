@@ -1,7 +1,7 @@
 #include "Combat/SFlowAttack.h"
 #include "SCharacter.h"
 #include "SCombatComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "SCharacterMovementComponent.h"
 
 void USFlowAttack::Setup(AActor* Owner)
 {
@@ -31,10 +31,24 @@ bool USFlowAttack::CanStart(AActor* InstigatorActor)
 void USFlowAttack::StartAbility_Implementation(AActor* InstigatorActor)
 {
 	Super::StartAbility_Implementation(InstigatorActor);
+
+	const FVector AttackDirection = (Enemy->GetActorLocation() - GetCharacterOwner()->GetActorLocation()).GetSafeNormal2D();
+	const FVector TargetLoc = Enemy->GetActorLocation() - AttackDirection * 100.0f; 
+	const FRotator TargetRot = AttackDirection.Rotation();
+	CombatComponent->SetWarpTarget(TargetLoc, TargetRot);
 	
+	const float Duration = GetCharacterOwner()->PlayAnimMontage(Attacks) - 0.15f;
+
+	FTimerDelegate Delegate;
+	Delegate.BindUFunction(this, "StopAbility", GetCharacterOwner());
+	GetWorld()->GetTimerManager().SetTimer(Attack_TimerHandle, Delegate, Duration, false);
+
+	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Custom, CMOVE_ATTACK);
 }
 
 void USFlowAttack::StopAbility_Implementation(AActor* InstigatorActor)
 {
 	Super::StopAbility_Implementation(InstigatorActor);
+	GetWorld()->GetTimerManager().ClearTimer(Attack_TimerHandle);
+	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 }

@@ -13,7 +13,7 @@ UENUM(BlueprintType)
 enum ECustomMovementMode : uint8
 {
 	CMOVE_None		UMETA(Hidden),
-	CMOVE_Climbing	UMETA(DisplayName = "Climbing"),
+	CMOVE_ATTACK	UMETA(DisplayName = "Climbing"),
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -51,5 +51,5 @@ public:
 
 	// CLIMBING
 private:
-	void PhysClimbing(float deltaTime, int32 Iterations);
+	void PhysAttacking(float deltaTime, int32 Iterations);
 };
