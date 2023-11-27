@@ -24,10 +24,13 @@ public:
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UAnimMontage* Attacks;
+	TArray<UAnimMontage*> Attacks{};
+	UAnimMontage* LastAttack{};
 
-	FTimerHandle Attack_TimerHandle;
+	FTimerHandle Attack_TimerHandle{};
 	
-	TObjectPtr<USCombatComponent> CombatComponent;
-	TObjectPtr<AActor> Enemy;
+	TObjectPtr<USCombatComponent> CombatComponent{};
+	TObjectPtr<AActor> Enemy{};
+
+	UAnimMontage* GetRandomAttack();
 };

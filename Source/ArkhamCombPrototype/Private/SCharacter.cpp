@@ -101,10 +101,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 FVector ASCharacter::GetInputDirection() const
 {
-	FVector Acceleration = GetCharacterMovement()->GetCurrentAcceleration();
-	Acceleration.Normalize();
-
-	return Acceleration;
+	return InputDirection;
 }
 
 void ASCharacter::Move(const FInputActionValue& Value)
@@ -115,6 +112,8 @@ void ASCharacter::Move(const FInputActionValue& Value)
 	ControlRot.Pitch = 0;
 	ControlRot.Roll= 0;
 	const FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+
+	InputDirection = ControlRot.Vector() * Input.Y + RightVector * Input.X;
 
 	AddMovementInput(ControlRot.Vector(), Input.Y);
 	AddMovementInput(RightVector, Input.X);	

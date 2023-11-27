@@ -1,5 +1,7 @@
 #include "SCombatComponent.h"
 
+TAutoConsoleVariable CVar_DebugCombatFinding(TEXT("a.DebugCombat"), true, TEXT("Show spheres on enemyies finding to attack"), ECVF_Cheat);
+
 USCombatComponent::USCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
@@ -7,8 +9,6 @@ USCombatComponent::USCombatComponent()
 
 AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 {
-	const FVector Direction2D = Direction.GetSafeNormal2D();
-
 	TArray<FOverlapResult> OverlapResults;
 	const FVector StartSweep = GetOwner()->GetActorLocation();
 
@@ -19,7 +19,7 @@ AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 	SphereShape.SetSphere(MaxDistanceToFindEnemy);
 
 	if(GetWorld()->OverlapMultiByObjectType(OverlapResults, StartSweep,
-		FQuat::Identity,	QueryParams, SphereShape))
+		FQuat::Identity,QueryParams, SphereShape))
 	{
 		float BestDotResult = -10.f;
 		AActor* SelectedEnemy = nullptr;
@@ -27,12 +27,24 @@ AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 		{
 			AActor* OverlappedActor = Overlap.GetActor();
 			FVector HitDirection = OverlappedActor->GetActorLocation() - StartSweep;
-			const float CurrentDot = FVector::DotProduct(Direction2D, HitDirection.GetSafeNormal2D());
-			if(CurrentDot > 0.2f && CurrentDot > BestDotResult)
+			const float CurrentDot = FVector::DotProduct(Direction, HitDirection.GetSafeNormal2D());
+			if(CurrentDot > 0.0f && CurrentDot > BestDotResult)
 			{
 				BestDotResult = CurrentDot;
 				SelectedEnemy = OverlappedActor;
 			}
+			
+			if(CVar_DebugCombatFinding.GetValueOnGameThread())
+			{
+				DrawDebugSphere(GetWorld(), OverlappedActor->GetActorLocation() + FVector::UpVector * 90.0f, 30.0f,
+					32, FColor::Yellow, false, 1.f);
+			}
+		}
+
+		if(SelectedEnemy)
+		{
+			DrawDebugSphere(GetWorld(), SelectedEnemy->GetActorLocation() + FVector::UpVector * 90.0f, 30.0f,
+					32, FColor::Green, false, 1.f, 0, 3.f);
 		}
 
 		return SelectedEnemy;

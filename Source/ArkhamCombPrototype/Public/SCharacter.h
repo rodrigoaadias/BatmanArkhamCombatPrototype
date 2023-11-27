@@ -89,6 +89,7 @@ public:
 
 private:
 	bool bWasFallingLastFrame;
+	FVector InputDirection {FVector::ZeroVector};
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);

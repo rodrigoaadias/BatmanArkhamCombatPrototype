@@ -11,19 +11,13 @@ void USFlowAttack::Setup(AActor* Owner)
 
 bool USFlowAttack::CanStart(AActor* InstigatorActor)
 {
-	if(!Super::CanStart(InstigatorActor))
+	if(!Super::CanStart(InstigatorActor) || Attacks.Num() == 0)
 	{
 		return false;
 	}
 
-	const FVector Direction = GetCharacterOwner()->GetCharacterMovement()->GetCurrentAcceleration().GetSafeNormal();
+	const FVector Direction = GetCharacterOwner()->GetInputDirection();
 	Enemy = CombatComponent->GetEnemyOnDirection(Direction);
-
-	if(Enemy)
-	{
-		DrawDebugSphere(GetWorld(), Enemy->GetActorLocation(), 30.0f,
-			32, FColor::Green, false, 1.f);
-	}
 
 	return Enemy != nullptr;
 }
@@ -36,8 +30,8 @@ void USFlowAttack::StartAbility_Implementation(AActor* InstigatorActor)
 	const FVector TargetLoc = Enemy->GetActorLocation() - AttackDirection * 100.0f; 
 	const FRotator TargetRot = AttackDirection.Rotation();
 	CombatComponent->SetWarpTarget(TargetLoc, TargetRot);
-	
-	const float Duration = GetCharacterOwner()->PlayAnimMontage(Attacks) - 0.15f;
+
+	const float Duration = GetCharacterOwner()->PlayAnimMontage(GetRandomAttack()) - 0.15f;
 
 	FTimerDelegate Delegate;
 	Delegate.BindUFunction(this, "StopAbility", GetCharacterOwner());
@@ -51,4 +45,21 @@ void USFlowAttack::StopAbility_Implementation(AActor* InstigatorActor)
 	Super::StopAbility_Implementation(InstigatorActor);
 	GetWorld()->GetTimerManager().ClearTimer(Attack_TimerHandle);
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+}
+
+UAnimMontage* USFlowAttack::GetRandomAttack()
+{
+	if(Attacks.Num() == 1)
+	{
+		return Attacks[0];
+	}
+
+	int32 index = FMath::RandRange(0, Attacks.Num() - 1);
+	while(Attacks.Num() > 1 && Attacks[index] == LastAttack)
+	{
+		index = FMath::RandRange(0, Attacks.Num()-1);
+	}
+
+	LastAttack = Attacks[index];
+	return Attacks[index];
 }
