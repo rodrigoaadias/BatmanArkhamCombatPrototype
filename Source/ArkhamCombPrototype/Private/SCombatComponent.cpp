@@ -1,4 +1,5 @@
 #include "SCombatComponent.h"
+#include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
 
 TAutoConsoleVariable CVar_DebugCombatFinding(TEXT("a.DebugCombat"), true, TEXT("Show spheres on enemyies finding to attack"), ECVF_Cheat);
 
@@ -58,5 +59,21 @@ void USCombatComponent::SetWarpTarget(const FVector Location, const FRotator Rot
 	WarpTargetLocation = Location;
 	WarpTargetRotation = Rotation;
 	UpdateWarpTarget.Broadcast();
+}
+
+void USCombatComponent::SetCurrentTarget(AActor* Target)
+{
+	CurrentTarget = Target;
+}
+
+void USCombatComponent::ApplyDamage()
+{
+	if(CurrentTarget == nullptr)
+	{
+		return;
+	}
+
+	FHitResult HitResult;
+	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, 10.0f, HitResult);
 }
 

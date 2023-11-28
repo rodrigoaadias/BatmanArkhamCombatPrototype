@@ -2,6 +2,7 @@
 #include "SCharacter.h"
 #include "SCombatComponent.h"
 #include "SCharacterMovementComponent.h"
+#include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
 
 void USFlowAttack::Setup(AActor* Owner)
 {
@@ -30,6 +31,7 @@ void USFlowAttack::StartAbility_Implementation(AActor* InstigatorActor)
 	const FVector TargetLoc = Enemy->GetActorLocation() - AttackDirection * 100.0f; 
 	const FRotator TargetRot = AttackDirection.Rotation();
 	CombatComponent->SetWarpTarget(TargetLoc, TargetRot);
+	CombatComponent->SetCurrentTarget(Enemy);
 
 	const float Duration = GetCharacterOwner()->PlayAnimMontage(GetRandomAttack()) - 0.15f;
 
@@ -45,6 +47,7 @@ void USFlowAttack::StopAbility_Implementation(AActor* InstigatorActor)
 	Super::StopAbility_Implementation(InstigatorActor);
 	GetWorld()->GetTimerManager().ClearTimer(Attack_TimerHandle);
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	CombatComponent->SetCurrentTarget(nullptr);
 }
 
 UAnimMontage* USFlowAttack::GetRandomAttack()

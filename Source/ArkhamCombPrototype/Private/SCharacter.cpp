@@ -9,6 +9,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "SAttributeComponent.h"
 #include "SCombatComponent.h"
 #include "Components/ArrowComponent.h"
 
@@ -28,6 +29,8 @@ ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 
 	AbilityComponent = CreateDefaultSubobject<USAbilityComponent>(TEXT("Ability Comp"));
 	CombatComponent = CreateDefaultSubobject<USCombatComponent>(TEXT("Combat Component"));
+	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>(TEXT("Attribute Component"));
+
 	CombatArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Combat Arrow Debug"));
 	CombatArrowComp->SetupAttachment(RootComponent);
 

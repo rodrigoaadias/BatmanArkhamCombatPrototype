@@ -33,4 +33,5 @@ protected:
 	TObjectPtr<AActor> Enemy{};
 
 	UAnimMontage* GetRandomAttack();
+
 };

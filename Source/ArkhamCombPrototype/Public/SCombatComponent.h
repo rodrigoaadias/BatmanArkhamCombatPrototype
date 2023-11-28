@@ -18,6 +18,8 @@ public:
 
 protected:
 
+	TObjectPtr<AActor> CurrentTarget{};
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Query")
 	TEnumAsByte<ECollisionChannel> EnemyObjectType;
 	
@@ -37,4 +39,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnStartCombatWarping UpdateWarpTarget;
+
+	void SetCurrentTarget(AActor* Target);
+
+	UFUNCTION(BlueprintCallable)
+	void ApplyDamage();
 };
