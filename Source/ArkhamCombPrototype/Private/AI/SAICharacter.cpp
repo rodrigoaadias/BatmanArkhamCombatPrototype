@@ -17,5 +17,15 @@ void ASAICharacter::PostInitializeComponents()
 void ASAICharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp,
 	float NewHealth, float Delta)
 {
-	LogOnScreen(GetWorld(), FString::Printf(TEXT("%s: Health Changed!"), *GetNameSafe(this)));
+	FVector Direction = (GetActorLocation() - InstigatorActor->GetActorLocation()).GetSafeNormal2D();
+	float ForwardDot = FVector::DotProduct(Direction, GetActorForwardVector());
+
+	if(ForwardDot > 0.0f)
+	{
+		PlayAnimMontage(BackHitMontage);		
+	}
+	else
+	{
+		PlayAnimMontage(FrontHitMontage);		
+	}	
 }

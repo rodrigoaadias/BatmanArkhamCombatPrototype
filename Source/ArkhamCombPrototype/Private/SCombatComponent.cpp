@@ -27,6 +27,11 @@ AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 		for (FOverlapResult Overlap : OverlapResults)
 		{
 			AActor* OverlappedActor = Overlap.GetActor();
+			if(OverlappedActor == GetOwner())
+			{
+				continue;
+			}
+			
 			FVector HitDirection = OverlappedActor->GetActorLocation() - StartSweep;
 			const float CurrentDot = FVector::DotProduct(Direction, HitDirection.GetSafeNormal2D());
 			if(CurrentDot > 0.0f && CurrentDot > BestDotResult)

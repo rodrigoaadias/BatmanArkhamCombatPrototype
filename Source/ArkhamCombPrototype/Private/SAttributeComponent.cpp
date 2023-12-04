@@ -59,7 +59,7 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 		const float Multiplier = CVarDamageMultiplier.GetValueOnGameThread();
 		Delta *= Multiplier;
 	}
-	
+
 	const float OldHealth = Health;
 	const float LocalHealth = FMath::Clamp(Health + Delta, 0, MaxHealth);
 	const float ActualDelta = LocalHealth - OldHealth;
