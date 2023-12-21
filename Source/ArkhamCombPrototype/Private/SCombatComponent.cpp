@@ -1,5 +1,6 @@
 #include "SCombatComponent.h"
 #include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
+#include "Components/CapsuleComponent.h"
 
 TAutoConsoleVariable CVar_DebugCombatFinding(TEXT("a.DebugCombat"), true, TEXT("Show spheres on enemyies finding to attack"), ECVF_Cheat);
 
@@ -78,7 +79,10 @@ void USCombatComponent::ApplyDamage()
 		return;
 	}
 
-	FHitResult HitResult;
-	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, 10.0f, HitResult);
+	FHitResult HitResult {};
+	USkeletalMeshComponent* SkeletalMesh = CurrentTarget->GetComponentByClass<USkeletalMeshComponent>();
+	HitResult.Component = SkeletalMesh;
+	HitResult.BoneName = FName("spine_01");
+	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, 30.0f, HitResult);
 }
 
