@@ -30,7 +30,7 @@ protected:
 	TObjectPtr<UAnimMontage> BackHitMontage;
 
 	void Die();
-	
+
 	UFUNCTION()
 	void HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);	
 };
