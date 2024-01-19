@@ -40,7 +40,7 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Ability")
-	void AddAbility(TSubclassOf<USAbility> AbilityClass);
+	void AddAbility(TSubclassOf<USAbility> AbilityClass, USAbility*& Result);
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	bool StartAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName);

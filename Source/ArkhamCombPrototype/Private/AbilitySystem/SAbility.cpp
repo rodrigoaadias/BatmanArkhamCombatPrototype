@@ -93,7 +93,7 @@ bool USAbility::IsRunning() const
 	return  bIsRunning;
 }
 
-ASCharacter* USAbility::GetCharacterOwner() const
+ACharacter* USAbility::GetCharacterOwner() const
 {
 	return CharacterOwner;
 }

@@ -2,7 +2,6 @@
 #include "SCharacter.h"
 #include "SCombatComponent.h"
 #include "SCharacterMovementComponent.h"
-#include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
 
 void USFlowAttack::Setup(AActor* Owner)
 {
@@ -17,7 +16,7 @@ bool USFlowAttack::CanStart(AActor* InstigatorActor)
 		return false;
 	}
 
-	const FVector Direction = GetCharacterOwner()->GetInputDirection();
+	const FVector Direction = Cast<ASCharacter>(GetCharacterOwner())->GetInputDirection();
 	Enemy = CombatComponent->GetEnemyOnDirection(Direction);
 
 	return Enemy != nullptr;

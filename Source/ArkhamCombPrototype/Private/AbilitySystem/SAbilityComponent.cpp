@@ -15,7 +15,8 @@ void USAbilityComponent::BeginPlay()
 
 	for (TSubclassOf<USAbility> Ability : DefaultAbilities)
 	{
-		AddAbility(Ability);
+		USAbility* Result;
+		AddAbility(Ability, Result);
 	}
 }
 
@@ -31,8 +32,9 @@ void USAbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	}
 }
 
-void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass)
+void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass, USAbility*& Result)
 {
+	Result = nullptr;
 	if(!ensure(AbilityClass))
 	{
 		return;
@@ -43,6 +45,7 @@ void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass)
 	{
 		NewAbility->Setup(GetOwner());
 		Abilities.Add(NewAbility);
+		Result = NewAbility;
 	}
 }
 

@@ -1,5 +1,6 @@
 #include "AI/SAICharacter.h"
 #include "SAttributeComponent.h"
+#include "AbilitySystem/SAbilityComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -7,6 +8,7 @@ ASAICharacter::ASAICharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>(TEXT("Attribute Component"));
+	AbilityComponent = CreateDefaultSubobject<USAbilityComponent>(TEXT("Ability Component"));
 }
 
 void ASAICharacter::PostInitializeComponents()

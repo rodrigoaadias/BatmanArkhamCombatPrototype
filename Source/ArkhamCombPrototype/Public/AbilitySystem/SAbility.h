@@ -45,7 +45,7 @@ protected:
 	bool bCanTick;
 
 private:
-	TObjectPtr<ASCharacter> CharacterOwner;
+	TObjectPtr<ACharacter> CharacterOwner;
 
 	// track last frame to avoid tick more than once in a frame
 	uint32 LastTickFrame = INDEX_NONE;
@@ -80,7 +80,7 @@ public:
 	bool IsRunning() const;
 
 	UFUNCTION(BlueprintCallable)
-	ASCharacter* GetCharacterOwner() const;
+	ACharacter* GetCharacterOwner() const;
 
 	UFUNCTION(BlueprintCallable)
 	FGameplayTagContainer GetAbilityTags() const;
