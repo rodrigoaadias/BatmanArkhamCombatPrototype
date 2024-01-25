@@ -12,7 +12,7 @@ USAbility::USAbility()
 
 void USAbility::Setup(AActor* Owner)
 {
-	CharacterOwner = Cast<ASCharacter>(Owner);
+	CharacterOwner = Cast<ACharacter>(Owner);
 }
 
 bool USAbility::CanStart(AActor* InstigatorActor)
@@ -51,6 +51,7 @@ void USAbility::StartAbility_Implementation(AActor* InstigatorActor)
 	bIsRunning = true;
 	GetOwningComponent()->ActiveTags.AppendTags(GrantsTags);
 	StartTime = GetWorld()->TimeSeconds;
+	OnStarted.Broadcast();
 }
 
 void USAbility::StopAbility_Implementation(AActor* InstigatorActor)
@@ -65,6 +66,7 @@ void USAbility::StopAbility_Implementation(AActor* InstigatorActor)
 	bIsRunning = false;
 	GetOwningComponent()->ActiveTags.RemoveTags(GrantsTags);
 	StopTime = GetWorld()->TimeSeconds;
+	OnStopped.Broadcast();
 }
 
 USAbilityComponent* USAbility::GetOwningComponent() const
@@ -83,7 +85,7 @@ UWorld* USAbility::GetWorld() const
 	return nullptr;
 }
 
-FName USAbility::GetAbilityNameTag() const
+FName USAbility::GetAbilityName() const
 {
 	return AbilityName;
 }
@@ -101,6 +103,11 @@ ACharacter* USAbility::GetCharacterOwner() const
 FGameplayTagContainer USAbility::GetAbilityTags() const
 {
 	return GrantsTags;
+}
+
+bool USAbility::IsAutoStart() const
+{
+	return bAutoStart;
 }
 
 void USAbility::Tick(float DeltaTime)

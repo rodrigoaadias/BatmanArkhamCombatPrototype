@@ -16,7 +16,7 @@ void USAbilityComponent::BeginPlay()
 	for (TSubclassOf<USAbility> Ability : DefaultAbilities)
 	{
 		USAbility* Result;
-		AddAbility(Ability, Result);
+		AddAbility(Ability, nullptr,Result);
 	}
 }
 
@@ -32,7 +32,7 @@ void USAbilityComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	}
 }
 
-void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass, USAbility*& Result)
+void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass, AActor* InstigatorActor, USAbility*& Result)
 {
 	Result = nullptr;
 	if(!ensure(AbilityClass))
@@ -46,6 +46,10 @@ void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass, USAbili
 		NewAbility->Setup(GetOwner());
 		Abilities.Add(NewAbility);
 		Result = NewAbility;
+		if(NewAbility->IsAutoStart())
+		{
+			StartAbilityByTagName(InstigatorActor, NewAbility->GetAbilityName());
+		}
 	}
 }
 
@@ -53,7 +57,7 @@ bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FName Ab
 {
 	for(USAbility* Ability : Abilities)
 	{
-		if(ensure(Ability) && Ability->GetAbilityNameTag() == AbilityTagName)
+		if(ensure(Ability) && Ability->GetAbilityName() == AbilityTagName)
 		{
 			if(!Ability->CanStart(InstigatorActor))
 			{
@@ -78,7 +82,7 @@ bool USAbilityComponent::StopAbilityByTagName(AActor* InstigatorActor, FName Abi
 {
 	for(USAbility* Ability : Abilities)
 	{
-		if(Ability && Ability->GetAbilityNameTag() == AbilityTagName)
+		if(Ability && Ability->GetAbilityName() == AbilityTagName)
 		{
 			if(!Ability->IsRunning())
 			{

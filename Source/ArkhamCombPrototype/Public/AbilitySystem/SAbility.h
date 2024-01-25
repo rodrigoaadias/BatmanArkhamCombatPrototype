@@ -6,6 +6,8 @@
 #include "GameplayTagContainer.h"
 #include "SAbility.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnChangedExecution);
+
 class USAbilityComponent;
 class ASCharacter;
 /**
@@ -22,6 +24,9 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
 	FName AbilityName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
+	bool bAutoStart{};
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer GrantsTags;
@@ -44,6 +49,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
 	bool bCanTick;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnChangedExecution OnStarted;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnChangedExecution OnStopped;
 private:
 	TObjectPtr<ACharacter> CharacterOwner;
 
@@ -74,7 +84,7 @@ public:
 	virtual UWorld* GetWorld() const override;
 
 	UFUNCTION(BlueprintCallable)
-	FName GetAbilityNameTag() const;
+	FName GetAbilityName() const;
 
 	UFUNCTION(BlueprintCallable)
 	bool IsRunning() const;
@@ -84,6 +94,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FGameplayTagContainer GetAbilityTags() const;
+
+	UFUNCTION(BlueprintCallable)
+	bool IsAutoStart() const;
 
 private:
 	virtual void Tick(float DeltaTime) override;
