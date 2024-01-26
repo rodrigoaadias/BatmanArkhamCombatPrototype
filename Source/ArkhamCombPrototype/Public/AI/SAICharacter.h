@@ -36,5 +36,11 @@ protected:
 	void Die();
 
 	UFUNCTION()
-	void HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);	
+	void HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
+private:
+	bool bIsDead{false};
+
+public:
+	FORCEINLINE bool IsDead() const {return bIsDead;}
 };

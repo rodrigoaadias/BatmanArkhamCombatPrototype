@@ -28,6 +28,7 @@ void ASAICharacter::Die()
 
 	// Destroy
 	SetLifeSpan(10.0f);
+	bIsDead = true;
 }
 
 void ASAICharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp,

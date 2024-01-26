@@ -15,7 +15,8 @@ public class ArkhamCombPrototype : ModuleRules
 			"Engine", 
 			"InputCore", 
 			"EnhancedInput", 
-			"GameplayTags"
+			"GameplayTags",
+			"AIModule"
 		});
 	}
 }
