@@ -24,7 +24,7 @@ void ASAISquadController::GoNextEnemy()
 		GetWorldTimerManager().ClearTimer(Attack_TimerHandle);
 		return;
 	}
-	
+
 	CurrentMemberIndex++;
 	CurrentMemberIndex = CurrentMemberIndex % SquadMembers.Num();
 	SelectEnemyToAttack();
