@@ -11,6 +11,7 @@
 #include "EnhancedInputComponent.h"
 #include "SAttributeComponent.h"
 #include "SCombatComponent.h"
+#include "ArkhamCombPrototype/ArkhamCombPrototype.h"
 #include "Components/ArrowComponent.h"
 
 ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
@@ -38,9 +39,37 @@ ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 	bUseControllerRotationYaw = false;
 }
 
+void ASCharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if(Delta < 0)
+	{
+		LogOnScreen(GetWorld(), "PLAYER TOOK DAMAGE");	
+	}
+	
+	FVector Direction = (GetActorLocation() - InstigatorActor->GetActorLocation()).GetSafeNormal2D();
+	float ForwardDot = FVector::DotProduct(Direction, GetActorForwardVector());
+
+	if(NewHealth <= 0 && Delta < 0)
+	{
+		//Die();
+		return;
+	}
+
+	// if(ForwardDot > 0.0f)
+	// {
+	// 	PlayAnimMontage(BackHitMontage);		
+	// }
+	// else
+	// {
+	// 	PlayAnimMontage(FrontHitMontage);		
+	// }	
+}
+
 void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	AttributeComponent->OnHealthChanged.AddDynamic(this, &ASCharacter::HandleHealthChanged);
 }
 
 void ASCharacter::Landed(const FHitResult& Hit)

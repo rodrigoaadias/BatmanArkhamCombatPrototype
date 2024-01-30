@@ -72,6 +72,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UArrowComponent* CombatArrowComp;
 
+	UFUNCTION()
+	void HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
+
 	virtual void BeginPlay() override;
 	virtual void Landed(const FHitResult& Hit) override;
 

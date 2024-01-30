@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "SAICharacter.generated.h"
 
+class USCharacterDamageCauser;
+class USphereComponent;
 class USAbilityComponent;
 class USAttributeComponent;
 
@@ -32,6 +34,15 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UAnimMontage> BackHitMontage;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USCharacterDamageCauser> DamageCauserComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<USphereComponent> DamageTrigger;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Components")
+	FName DamageSocketName{"Punch_Socket"};
 
 	void Die();
 

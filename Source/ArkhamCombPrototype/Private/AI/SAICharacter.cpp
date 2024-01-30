@@ -1,7 +1,9 @@
 #include "AI/SAICharacter.h"
 #include "SAttributeComponent.h"
 #include "AbilitySystem/SAbilityComponent.h"
+#include "Combat/SCharacterDamageCauser.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ASAICharacter::ASAICharacter()
@@ -9,12 +11,17 @@ ASAICharacter::ASAICharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	AttributeComponent = CreateDefaultSubobject<USAttributeComponent>(TEXT("Attribute Component"));
 	AbilityComponent = CreateDefaultSubobject<USAbilityComponent>(TEXT("Ability Component"));
+	DamageCauserComp = CreateDefaultSubobject<USCharacterDamageCauser>(TEXT("Damage Causer Component"));
+	DamageTrigger = CreateDefaultSubobject<USphereComponent>(TEXT("Damage Trigger"));
+	DamageTrigger->SetupAttachment(GetMesh(), DamageSocketName);
+	DamageTrigger->SetCollisionProfileName("Trigger");
 }
 
 void ASAICharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	AttributeComponent->OnHealthChanged.AddDynamic(this, &ASAICharacter::HandleHealthChanged);
+	DamageCauserComp->SetTriggerReference(DamageTrigger);
 }
 
 void ASAICharacter::Die()
