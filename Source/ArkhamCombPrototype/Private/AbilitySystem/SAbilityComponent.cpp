@@ -53,17 +53,17 @@ void USAbilityComponent::AddAbility(TSubclassOf<USAbility> AbilityClass, AActor*
 	}
 }
 
-bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName)
+bool USAbilityComponent::StartAbilityByTagName(AActor* InstigatorActor, FName AbilityName)
 {
 	for(USAbility* Ability : Abilities)
 	{
-		if(ensure(Ability) && Ability->GetAbilityName() == AbilityTagName)
+		if(ensure(Ability) && Ability->GetAbilityName() == AbilityName)
 		{
 			if(!Ability->CanStart(InstigatorActor))
 			{
 				if(CVarDebugAbilityErrors.GetValueOnGameThread())
 				{
-					FString FailedMsg = FString::Printf(TEXT("Failed to start ability: %s"), *AbilityTagName.ToString());
+					FString FailedMsg = FString::Printf(TEXT("Failed to start ability: %s"), *AbilityName.ToString());
 					GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				}
 				return false;

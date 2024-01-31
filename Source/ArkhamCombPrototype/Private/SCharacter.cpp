@@ -1,18 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SCharacter.h"
-
 #include "SCharacterMovementComponent.h"
 #include "AbilitySystem/SAbilityComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "SAttributeComponent.h"
 #include "SCombatComponent.h"
-#include "ArkhamCombPrototype/ArkhamCombPrototype.h"
 #include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
 
 ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 	:Super(ObjectInitializer.SetDefaultSubobjectClass<USCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -42,28 +40,28 @@ ASCharacter::ASCharacter(const FObjectInitializer& ObjectInitializer)
 void ASCharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth,
 	float Delta)
 {
-	if(Delta < 0)
+	if(Delta >= 0)
 	{
-		LogOnScreen(GetWorld(), "PLAYER TOOK DAMAGE");	
+		return;
 	}
-	
+
 	FVector Direction = (GetActorLocation() - InstigatorActor->GetActorLocation()).GetSafeNormal2D();
 	float ForwardDot = FVector::DotProduct(Direction, GetActorForwardVector());
 
 	if(NewHealth <= 0 && Delta < 0)
 	{
-		//Die();
+		Die();
 		return;
 	}
 
-	// if(ForwardDot > 0.0f)
-	// {
-	// 	PlayAnimMontage(BackHitMontage);		
-	// }
-	// else
-	// {
-	// 	PlayAnimMontage(FrontHitMontage);		
-	// }	
+	if(ForwardDot > 0.0f)
+	{
+		AbilityComponent->StartAbilityByTagName(InstigatorActor, "BackHitReaction");
+	}
+	else
+	{
+		AbilityComponent->StartAbilityByTagName(InstigatorActor, "FrontHitReaction");
+	}	
 }
 
 void ASCharacter::BeginPlay()
@@ -92,6 +90,16 @@ void ASCharacter::StartJump()
 {
 	AbilityComponent->StartAbilityByTagName(this, "Jump");
 	OnJumpPressed.Broadcast();
+}
+
+void ASCharacter::Die()
+{
+	// ragdoll
+	GetMesh()->SetAllBodiesSimulatePhysics(true);
+	GetMesh()->SetCollisionProfileName("Ragdoll");
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->DisableMovement();
 }
 
 void ASCharacter::Tick(float DeltaTime)

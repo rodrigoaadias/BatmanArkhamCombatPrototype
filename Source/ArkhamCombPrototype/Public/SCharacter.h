@@ -72,6 +72,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UArrowComponent* CombatArrowComp;
 
+
 	UFUNCTION()
 	void HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp, float NewHealth, float Delta);
 
@@ -82,6 +83,7 @@ protected:
 	void StopCrouch();
 
 	void StartJump();
+	void Die();
 
 public:	
 	virtual void Tick(float DeltaTime) override;

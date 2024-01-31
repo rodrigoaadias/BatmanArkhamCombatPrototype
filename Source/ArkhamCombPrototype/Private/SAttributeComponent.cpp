@@ -1,5 +1,7 @@
 #include "SAttributeComponent.h"
 
+#include "SGameMode.h"
+
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global damage multiplier to apply in Attributes"), ECVF_Cheat);
 
 // Sets default values for this component's properties
@@ -65,6 +67,19 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 	const float ActualDelta = LocalHealth - OldHealth;
 	Health += ActualDelta;
 	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+
+	if(ActualDelta < 0.0f)
+	{
+		if(Health == 0.0f)
+		{
+			ASGameMode* GM = GetWorld()->GetAuthGameMode<ASGameMode>();
+			if(GM)
+			{
+				GM->OnActorKilled(GetOwner(), InstigatorActor);
+			}
+		}
+	}
+
 	return ActualDelta != 0;
 }
 

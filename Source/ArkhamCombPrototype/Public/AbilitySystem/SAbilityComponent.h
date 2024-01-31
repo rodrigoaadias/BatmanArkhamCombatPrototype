@@ -43,7 +43,7 @@ public:
 	void AddAbility(TSubclassOf<USAbility> AbilityClass, AActor* InstigatorActor, USAbility*& Result);
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
-	bool StartAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName);
+	bool StartAbilityByTagName(AActor* InstigatorActor, FName AbilityName);
 	
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	bool StopAbilityByTagName(AActor* InstigatorActor, FName AbilityTagName);
