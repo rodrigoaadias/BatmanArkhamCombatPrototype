@@ -36,6 +36,8 @@ void ASAICharacter::Die()
 	// Destroy
 	SetLifeSpan(10.0f);
 	bIsDead = true;
+	OnCharacterDied.Broadcast(this);
+	OnCharacterDied.Clear();
 }
 
 void ASAICharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComponent* OwningComp,

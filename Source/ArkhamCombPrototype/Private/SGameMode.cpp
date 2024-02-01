@@ -20,6 +20,7 @@ void ASGameMode::OnActorKilled(AActor* VictimActor, AActor* KillerActor)
 		APawn* KillerPawn = Cast<APawn>(KillerActor);
 		if(KillerPawn)
 		{
+			
 		}
 	}
 
@@ -30,4 +31,14 @@ void ASGameMode::RestartLevel()
 {
 	const FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
 	UGameplayStatics::OpenLevel(GetWorld(), FName(CurrentLevelName));
+}
+
+void ASGameMode::NotifyLastEnemyRemaining()
+{
+	bLastEnemyRemaining = true;
+}
+
+void ASGameMode::ResetEnemyRemaining()
+{	
+	bLastEnemyRemaining = false;
 }

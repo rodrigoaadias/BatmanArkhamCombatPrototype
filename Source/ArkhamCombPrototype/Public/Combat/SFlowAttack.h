@@ -6,6 +6,7 @@
 #include "AbilitySystem/SAbility.h"
 #include "SFlowAttack.generated.h"
 
+class ASGameMode;
 class USCombatComponent;
 /**
  * 
@@ -28,10 +29,16 @@ protected:
 	UAnimMontage* LastAttack{};
 
 	FTimerHandle Attack_TimerHandle{};
+	FTimerHandle SlowMotion_TimerHandle{};
 	
 	TObjectPtr<USCombatComponent> CombatComponent{};
 	TObjectPtr<AActor> Enemy{};
 
 	UAnimMontage* GetRandomAttack();
 
+	TObjectPtr<ASGameMode> GameMode{};
+
+	UFUNCTION()
+	void StartSlowMotion();
+	bool bIsInSlowMotion{};
 };

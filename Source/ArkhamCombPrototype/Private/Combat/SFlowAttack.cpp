@@ -2,6 +2,8 @@
 #include "SCharacter.h"
 #include "SCombatComponent.h"
 #include "SCharacterMovementComponent.h"
+#include "SGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 void USFlowAttack::Setup(AActor* Owner)
 {
@@ -34,6 +36,14 @@ void USFlowAttack::StartAbility_Implementation(AActor* InstigatorActor)
 
 	const float Duration = GetCharacterOwner()->PlayAnimMontage(GetRandomAttack()) - 0.15f;
 
+	GameMode = GetWorld()->GetAuthGameMode<ASGameMode>();
+	if(GameMode && GameMode->IsLastEnemyRemaining())
+	{
+		FTimerDelegate SlowMotionDelegate;
+		SlowMotionDelegate.BindUFunction(this, "StartSlowMotion");
+		GetWorld()->GetTimerManager().SetTimer(SlowMotion_TimerHandle, SlowMotionDelegate, Duration*0.5f, false);
+	}
+	
 	FTimerDelegate Delegate;
 	Delegate.BindUFunction(this, "StopAbility", GetCharacterOwner());
 	GetWorld()->GetTimerManager().SetTimer(Attack_TimerHandle, Delegate, Duration, false);
@@ -64,4 +74,10 @@ UAnimMontage* USFlowAttack::GetRandomAttack()
 
 	LastAttack = Attacks[index];
 	return Attacks[index];
+}
+
+void USFlowAttack::StartSlowMotion()
+{
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.5f);
+	GameMode->ResetEnemyRemaining();
 }

@@ -37,4 +37,7 @@ private:
 	void ResetAttacking(const ASAICharacter* Enemy) const;
 
 	FTimerHandle Attack_TimerHandle{};
+
+	UFUNCTION()
+	void HandleMemberDied(ASAICharacter* EnemyDied);
 };

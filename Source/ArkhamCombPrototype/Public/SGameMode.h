@@ -5,18 +5,23 @@
 #include "GameFramework/GameModeBase.h"
 #include "SGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class ARKHAMCOMBPROTOTYPE_API ASGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-
-public:
 	
+protected:
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly)
+	bool bLastEnemyRemaining {false};
+	
+public:
+
 	void OnActorKilled(AActor* VictimActor, AActor* KillerActor);
 
 	UFUNCTION()
 	void RestartLevel();
+	
+	void NotifyLastEnemyRemaining();
+	void ResetEnemyRemaining();
+	FORCEINLINE bool IsLastEnemyRemaining() const {return bLastEnemyRemaining;}
 };

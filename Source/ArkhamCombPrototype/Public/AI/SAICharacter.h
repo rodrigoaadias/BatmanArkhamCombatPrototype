@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "SAICharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterAction, ASAICharacter*, CharacterDied);
+
 class USCharacterDamageCauser;
 class USphereComponent;
 class USAbilityComponent;
@@ -54,4 +56,7 @@ private:
 
 public:
 	FORCEINLINE bool IsDead() const {return bIsDead;}
+
+	UPROPERTY(BlueprintAssignable)
+	FCharacterAction OnCharacterDied;
 };
