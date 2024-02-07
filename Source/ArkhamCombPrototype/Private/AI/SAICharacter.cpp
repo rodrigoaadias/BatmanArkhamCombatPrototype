@@ -54,10 +54,16 @@ void ASAICharacter::HandleHealthChanged(AActor* InstigatorActor, USAttributeComp
 
 	if(ForwardDot > 0.0f)
 	{
-		PlayAnimMontage(BackHitMontage);		
+		AbilityComponent->StartAbilityByTagName(InstigatorActor, BackHitAbilityName);	
 	}
 	else
 	{
-		PlayAnimMontage(FrontHitMontage);		
-	}	
+		AbilityComponent->StartAbilityByTagName(InstigatorActor, FrontHitAbilityName);	
+	}
+}
+
+void ASAICharacter::SetMinimumHealth()
+{
+	const float Delta = AttributeComponent->GetCurrentHealth() - 1;
+	AttributeComponent->ApplyHealthChange(this, -Delta);
 }

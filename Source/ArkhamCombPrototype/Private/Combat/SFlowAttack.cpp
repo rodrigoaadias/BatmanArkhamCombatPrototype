@@ -57,6 +57,7 @@ void USFlowAttack::StopAbility_Implementation(AActor* InstigatorActor)
 	GetWorld()->GetTimerManager().ClearTimer(Attack_TimerHandle);
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	CombatComponent->SetCurrentTarget(nullptr);
+	StopSlowMotion();
 }
 
 UAnimMontage* USFlowAttack::GetRandomAttack()
@@ -80,4 +81,9 @@ void USFlowAttack::StartSlowMotion()
 {
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.5f);
 	GameMode->ResetEnemyRemaining();
+}
+
+void USFlowAttack::StopSlowMotion()
+{
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
 }

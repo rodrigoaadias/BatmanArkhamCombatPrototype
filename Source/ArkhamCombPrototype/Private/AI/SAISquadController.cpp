@@ -4,6 +4,7 @@
 
 #include "SGameMode.h"
 #include "AI/SAICharacter.h"
+#include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 
@@ -71,6 +72,7 @@ void ASAISquadController::HandleMemberDied(ASAICharacter* EnemyDied)
 		if(GM)
 		{
 			GM->NotifyLastEnemyRemaining();
+			SquadMembers[0]->SetMinimumHealth();
 		}
 	}
 }

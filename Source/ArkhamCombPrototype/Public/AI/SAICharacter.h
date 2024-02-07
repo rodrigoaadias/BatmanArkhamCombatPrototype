@@ -32,10 +32,10 @@ protected:
 	TObjectPtr<USAbilityComponent> AbilityComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimMontage> FrontHitMontage;
+	FName FrontHitAbilityName{};
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UAnimMontage> BackHitMontage;
+	FName BackHitAbilityName{};
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	TObjectPtr<USCharacterDamageCauser> DamageCauserComp;
@@ -59,4 +59,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FCharacterAction OnCharacterDied;
+
+	void SetMinimumHealth();
 };

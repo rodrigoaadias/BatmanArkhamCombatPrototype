@@ -40,5 +40,8 @@ protected:
 
 	UFUNCTION()
 	void StartSlowMotion();
+	
+	void StopSlowMotion();
+	
 	bool bIsInSlowMotion{};
 };
