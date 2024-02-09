@@ -29,19 +29,9 @@ protected:
 	UAnimMontage* LastAttack{};
 
 	FTimerHandle Attack_TimerHandle{};
-	FTimerHandle SlowMotion_TimerHandle{};
 	
 	TObjectPtr<USCombatComponent> CombatComponent{};
 	TObjectPtr<AActor> Enemy{};
 
 	UAnimMontage* GetRandomAttack();
-
-	TObjectPtr<ASGameMode> GameMode{};
-
-	UFUNCTION()
-	void StartSlowMotion();
-	
-	void StopSlowMotion();
-	
-	bool bIsInSlowMotion{};
 };
