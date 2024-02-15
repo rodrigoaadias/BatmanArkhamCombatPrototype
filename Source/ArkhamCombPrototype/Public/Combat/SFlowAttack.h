@@ -20,18 +20,30 @@ public:
 	void Setup(AActor* Owner) override;
 	bool CanStart(AActor* InstigatorActor) override;
 	void StartAbility_Implementation(AActor* InstigatorActor) override;
+	virtual void TickAbility(float DeltaTime) override;
 	void StopAbility_Implementation(AActor* InstigatorActor) override;
 
+	void UpdateWarpTarget() const;
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAnimMontage*> Attacks{};
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAnimMontage* FinalAttack{};
+	
+	UPROPERTY()
 	UAnimMontage* LastAttack{};
 
 	FTimerHandle Attack_TimerHandle{};
 	
 	TObjectPtr<USCombatComponent> CombatComponent{};
+
+	UPROPERTY()
 	TObjectPtr<AActor> Enemy{};
 
 	UAnimMontage* GetRandomAttack();
+
+private:
+	bool bInFinalSequence{false};
 };

@@ -18,6 +18,7 @@ public:
 
 protected:
 
+	UPROPERTY()
 	TObjectPtr<AActor> CurrentTarget{};
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Enemy Query")

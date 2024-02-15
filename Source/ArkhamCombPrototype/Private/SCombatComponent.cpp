@@ -1,4 +1,6 @@
 #include "SCombatComponent.h"
+
+#include "SGameMode.h"
 #include "ArkhamCombPrototype/SGameplayFunctionLibrary.h"
 #include "Components/CapsuleComponent.h"
 
@@ -79,10 +81,13 @@ void USCombatComponent::ApplyDamage()
 		return;
 	}
 
-	FHitResult HitResult {};
+ 	FHitResult HitResult {};
 	USkeletalMeshComponent* SkeletalMesh = CurrentTarget->GetComponentByClass<USkeletalMeshComponent>();
 	HitResult.Component = SkeletalMesh;
 	HitResult.BoneName = FName("spine_01");
-	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, 30.0f, HitResult);
+
+	const ASGameMode* GM = GetWorld()->GetAuthGameMode<ASGameMode>();
+	const float DamageAmount = GM && GM->IsLastEnemyRemaining() ? 10000.0f : 30.0f;
+	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, DamageAmount, HitResult);
 }
 

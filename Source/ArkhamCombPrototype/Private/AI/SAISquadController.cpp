@@ -72,7 +72,6 @@ void ASAISquadController::HandleMemberDied(ASAICharacter* EnemyDied)
 		if(GM)
 		{
 			GM->NotifyLastEnemyRemaining();
-			SquadMembers[0]->SetMinimumHealth();
 		}
 	}
 }

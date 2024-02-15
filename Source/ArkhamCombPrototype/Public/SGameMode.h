@@ -5,6 +5,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "SGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FActionDelegate);
+
 UCLASS()
 class ARKHAMCOMBPROTOTYPE_API ASGameMode : public AGameModeBase
 {
@@ -23,5 +25,11 @@ public:
 	
 	void NotifyLastEnemyRemaining();
 	void ResetEnemyRemaining();
-	FORCEINLINE bool IsLastEnemyRemaining() const {return bLastEnemyRemaining;}
+	FORCEINLINE bool IsLastEnemyRemaining() const { return bLastEnemyRemaining; }
+
+	UPROPERTY(BlueprintAssignable)
+	FActionDelegate OnFinalSequenceStarted{};
+
+	UPROPERTY(BlueprintAssignable)
+	FActionDelegate OnFinalSequenceEnded{};
 };
