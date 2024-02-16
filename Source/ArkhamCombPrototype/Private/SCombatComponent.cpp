@@ -50,7 +50,7 @@ AActor* USCombatComponent::GetEnemyOnDirection(const FVector Direction) const
 			}
 		}
 
-		if(SelectedEnemy)
+		if(SelectedEnemy && CVar_DebugCombatFinding.GetValueOnGameThread())
 		{
 			DrawDebugSphere(GetWorld(), SelectedEnemy->GetActorLocation() + FVector::UpVector * 90.0f, 30.0f,
 					32, FColor::Green, false, 1.f, 0, 3.f);
