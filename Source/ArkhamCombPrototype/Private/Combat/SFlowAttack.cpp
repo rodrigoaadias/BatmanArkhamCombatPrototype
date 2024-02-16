@@ -44,7 +44,7 @@ void USFlowAttack::StartAbility_Implementation(AActor* InstigatorActor)
 	if(GM && GM->IsLastEnemyRemaining())
 	{
 		SelectedMontage = FinalAttack;
-		GM->OnFinalSequenceStarted.Broadcast();
+		GM->OnFinalSequenceStarted.Broadcast(Enemy);
 		bInFinalSequence = true;
 	}
 	
@@ -68,17 +68,18 @@ void USFlowAttack::StopAbility_Implementation(AActor* InstigatorActor)
 	Super::StopAbility_Implementation(InstigatorActor);
 	GetWorld()->GetTimerManager().ClearTimer(Attack_TimerHandle);
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-	CombatComponent->SetCurrentTarget(nullptr);
 
 	if(bInFinalSequence)
 	{
 		ASGameMode* GM = GetWorld()->GetAuthGameMode<ASGameMode>();
 		if(GM)
 		{
-			GM->OnFinalSequenceEnded.Broadcast();
+			GM->OnFinalSequenceEnded.Broadcast(nullptr);
 			bInFinalSequence = false;
 		}
 	}
+
+	CombatComponent->SetCurrentTarget(nullptr);
 }
 
 UAnimMontage* USFlowAttack::GetRandomAttack()

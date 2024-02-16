@@ -5,7 +5,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "SGameMode.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FActionDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActionDelegate, AActor*, TargetEnemy);
 
 UCLASS()
 class ARKHAMCOMBPROTOTYPE_API ASGameMode : public AGameModeBase
