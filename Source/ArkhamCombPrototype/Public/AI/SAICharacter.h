@@ -6,7 +6,9 @@
 #include "GameFramework/Character.h"
 #include "SAICharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAction);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterAction, ASAICharacter*, CharacterDied);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWarpAction, FVector, TargetWarpLocation);
 
 class USCharacterDamageCauser;
 class USphereComponent;
@@ -59,6 +61,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FCharacterAction OnCharacterDied;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FAction OnPunchStarted;
+	
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FWarpAction OnUpdateWarpTarget;
 
 	void SetMinimumHealth();
 };
