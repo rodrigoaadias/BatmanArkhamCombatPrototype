@@ -10,7 +10,7 @@
 
 class USAttributeComponent;
 class USCombatComponent;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FJumpPressed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FKeyPressed);
 
 class USClimbingComponent;
 class USAbilityComponent;
@@ -94,7 +94,10 @@ public:
 	FVector GetInputDirection() const;
 
 	UPROPERTY(BlueprintAssignable)
-	FJumpPressed OnJumpPressed;
+	FKeyPressed OnJumpPressed;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FKeyPressed OnCounterAttackPressed;
 
 private:
 	bool bWasFallingLastFrame;
@@ -103,4 +106,5 @@ private:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Attack(const FInputActionValue& Value);
+	void CounterAttack(const FInputActionValue& Value);
 };

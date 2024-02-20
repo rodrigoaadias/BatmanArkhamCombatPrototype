@@ -64,7 +64,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FAction OnPunchStarted;
-	
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FAction OnCounterAttackStart;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FWarpAction OnUpdateWarpTarget;
 

@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "SCombatComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStartCombatWarping);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FActionEvent);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class ARKHAMCOMBPROTOTYPE_API USCombatComponent : public UActorComponent
@@ -39,7 +39,10 @@ public:
 	void SetWarpTarget(const FVector Location, const FRotator Rotation);
 
 	UPROPERTY(BlueprintAssignable)
-	FOnStartCombatWarping UpdateWarpTarget;
+	FActionEvent UpdateWarpTarget;
+
+	UPROPERTY(BlueprintAssignable)
+	FActionEvent StartCounterAttack;
 
 	void SetCurrentTarget(AActor* Target);
 

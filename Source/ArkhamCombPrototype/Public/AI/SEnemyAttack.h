@@ -29,10 +29,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Motion Warp")
 	float MaxWarpDistance{150.0f};
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Counter Attack")
+	FName CounterAttackTimerAbility {"CounterAttackTimer"};
 
 	FTimerHandle Attack_TimerHandle{};
 
-private:	
+private:
 	FVector PunchStartLocation{};
 
 	UPROPERTY()
@@ -43,4 +46,11 @@ private:
 
 	UFUNCTION()
 	void SetupPunchTarget();
+
+	UFUNCTION()
+	void SendCounterAttackEvent();
+
+	AActor* GetPlayerTarget() const;
+
+	void StartCounterAttackAbility() const;
 };
