@@ -1,6 +1,7 @@
 #include "Combat/SCounterAttack.h"
 #include "SCharacterMovementComponent.h"
 #include "SCombatComponent.h"
+#include "AbilitySystem/SAbilityComponent.h"
 #include "GameFramework/Character.h"
 
 void USCounterAttack::Setup(AActor* Owner)
@@ -17,7 +18,7 @@ void USCounterAttack::StartAbility_Implementation(AActor* InstigatorActor)
 	const float Duration = GetCharacterOwner()->PlayAnimMontage(CounterAttackMontage);
 
 	FTimerDelegate Delegate;
-	Delegate.BindUFunction(this, "StopAbility", GetCharacterOwner());
+	Delegate.BindUFunction(this, "StopAbility", InstigatorActor);
 	GetWorld()->GetTimerManager().SetTimer(Counter_TimerHandle, Delegate, Duration, false);
 
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Custom, CMOVE_ATTACK);
@@ -32,6 +33,9 @@ void USCounterAttack::StopAbility_Implementation(AActor* InstigatorActor)
 	GetWorld()->GetTimerManager().ClearTimer(Counter_TimerHandle);
 	GetCharacterOwner()->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	GetCharacterOwner()->SetCanBeDamaged(true);
+
+	CombatComponent->SetCurrentTarget(InstigatorActor);
+	GetOwningComponent()->StartAbilityByTagName(InstigatorActor, FlowAttackAbilityName);
 }
 
 void USCounterAttack::SetWarpTarget(const AActor* Instigator) const

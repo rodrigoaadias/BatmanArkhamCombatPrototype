@@ -17,6 +17,12 @@ bool USFlowAttack::CanStart(AActor* InstigatorActor)
 		return false;
 	}
 
+	Enemy = CombatComponent->GetCurrentTarget();
+	if(Enemy != nullptr)
+	{
+		return true;
+	}
+
 	const FVector Direction = Cast<ASCharacter>(GetCharacterOwner())->GetInputDirection();
 	Enemy = CombatComponent->GetEnemyOnDirection(Direction);
 

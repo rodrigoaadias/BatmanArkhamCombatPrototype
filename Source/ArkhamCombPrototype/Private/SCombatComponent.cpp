@@ -91,3 +91,8 @@ void USCombatComponent::ApplyDamage()
 	USGameplayFunctionLibrary::ApplyDirectionalDamage(GetOwner(), CurrentTarget, DamageAmount, HitResult);
 }
 
+AActor* USCombatComponent::GetCurrentTarget() const
+{
+	return CurrentTarget;
+}
+

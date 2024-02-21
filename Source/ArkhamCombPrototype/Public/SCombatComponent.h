@@ -48,4 +48,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ApplyDamage();
+
+	UFUNCTION(BlueprintCallable)
+	AActor* GetCurrentTarget() const;
 };

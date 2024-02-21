@@ -22,6 +22,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Counter Attack")
 	float DistanceFromEnemy{90.0f};
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Flow Attack")
+	FName FlowAttackAbilityName{"Attack"};
 
 	virtual void Setup(AActor* Owner) override;
 	virtual void StartAbility_Implementation(AActor* InstigatorActor) override;

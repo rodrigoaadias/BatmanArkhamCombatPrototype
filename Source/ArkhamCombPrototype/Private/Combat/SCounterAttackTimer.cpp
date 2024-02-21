@@ -17,7 +17,7 @@ void USCounterAttackTimer::StartAbility_Implementation(AActor* InstigatorActor)
 	Instigator = InstigatorActor;
 
 	FTimerDelegate Delegate;
-	Delegate.BindUFunction(this, "StopAbility", GetCharacterOwner());
+	Delegate.BindUFunction(this, "StopAbility", InstigatorActor);
 	GetWorld()->GetTimerManager().SetTimer(Window_TimerHandle, Delegate, CounterAttackWindowDuration, false);
 
 	CombatComponent->StartCounterAttack.AddDynamic(this, &USCounterAttackTimer::StartCounterAttack);
@@ -29,13 +29,12 @@ void USCounterAttackTimer::StopAbility_Implementation(AActor* InstigatorActor)
 	Super::StopAbility_Implementation(InstigatorActor);
 	Instigator = nullptr;
 	bCounterAttackPressed = false;
-	CombatComponent->StartCounterAttack.RemoveDynamic(this, &USCounterAttackTimer::StartCounterAttack);	
 	OwnerChar->OnCounterAttackPressed.RemoveDynamic(this, &USCounterAttackTimer::SetToCounter);
 }
 
 void USCounterAttackTimer::StartCounterAttack()
 {
-	if(bCounterAttackPressed)
+	if(bCounterAttackPressed && IsRunning())
 	{
 		GetOwningComponent()->StartAbilityByTagName(Instigator, CounterAttackAbilityName);
 	}
